@@ -23,18 +23,24 @@ def index():
 
 
 def call_software():
-    import sys
-    is_windows = hasattr(sys, 'getwindowsversion')
-    if (is_windows):
-        ouput = subprocess.check_output(["scripts/test_Asistente-LADM_COL.bat"], stderr=subprocess.STDOUT)
-    else:
-        ouput = subprocess.check_output(["scripts/test_Asistente-LADM_COL.sh"], stderr=subprocess.STDOUT)
+	import sys
+	output = b"vacio"
+	#output = bytearray()
+	is_windows = hasattr(sys, 'getwindowsversion')
+	if (is_windows):
+		try:
+			output = subprocess.check_output(["scripts\\test_Asistente-LADM_COL.bat"], stderr=subprocess.STDOUT)
+		except subprocess.CalledProcessError as e:
+			output = e.output
+			print("Error")
+			print(e.output)	
+	else:
+		output = subprocess.check_output(["scripts/test_Asistente-LADM_COL.sh"], stderr=subprocess.STDOUT)
 
     #os.system("C:/Users/aimplementacion/remote-execution/scripts/test_Asistente-LADM_COL.bat")
     # ouput = os.popen(
     #    "C:/Users/aimplementacion/remote-execution/scripts/test_Asistente-LADM_COL.bat").readlines()
-
-    return ouput
+	return output
 
 
 @app.route('/execute', methods=['GET', 'POST'])
@@ -47,7 +53,7 @@ def login():
         else:
             flash('You were successfully logged in')
             stdouttext = call_software()
-            print(stdouttext)
+            print("stdouttext", stdouttext)
             handle, filepath = tempfile.mkstemp('.log', 'remote-execution-')
             #fd = os.open( "foo.txt", os.O_RDWR|os.O_CREAT )
             #fd = os.fdopen(handle)
