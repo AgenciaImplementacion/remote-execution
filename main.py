@@ -62,7 +62,7 @@ def login():
             print("stdouttext", stdouttext)
             print("gitv", get_version())
             print("type", type(get_version()))
-            handle, filepath = tempfile.mkstemp('.log', 'remote-execution-')
+            handle, filepath = tempfile.mkstemp()
             #fd = os.open( "foo.txt", os.O_RDWR|os.O_CREAT )
             #fd = os.fdopen(handle)
             #nombre_archivo = filepath[filepath.rfind(os.sep) + 1:]
