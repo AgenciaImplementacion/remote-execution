@@ -2,7 +2,11 @@
 <html>
 <body>
 
-<form action="login" method="POST">
+{% if error != None %}
+<h5> {{ error }} </h5>
+{% endif %}
+
+<form action="execute" method="POST">
   Username:<br>
   <input type="text" name="username" value="admin">
   <br>
