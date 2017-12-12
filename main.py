@@ -1,7 +1,6 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 
-
 from flask import Flask, flash, redirect, render_template, \
     request, url_for
 
@@ -15,10 +14,8 @@ def index():
 
 
 def call_software():
-    from subprocess import call
-    #call(["ls", "-l"])
-    call(["cmd", "scripts/test_Asistente-LADM_COL.bat"])
-
+	import os
+	os.system("C:/Users/aimplementacion/remote-execution/scripts/test_Asistente-LADM_COL.bat")
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
