@@ -17,7 +17,7 @@ def index():
 def call_software():
     from subprocess import call
     #call(["ls", "-l"])
-    call(["gnome-terminal"])
+    call(["cmd", "scripts/test_Asistente-LADM_COL.bat"])
 
 
 @app.route('/login', methods=['GET', 'POST'])
@@ -29,7 +29,7 @@ def login():
             error = 'Invalid credentials'
         else:
             flash('You were successfully logged in')
-            return redirect(url_for('index'))
-    call_software()
-    return 'Hello, World!'
-    #return render_template('login.html', error=error)
+            call_software()
+            return 'Se ejecutó exitosamente :D'
+            #return redirect(url_for('index'))
+    return render_template('login.html', error=error)
