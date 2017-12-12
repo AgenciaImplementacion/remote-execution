@@ -4,6 +4,18 @@ Ejecutar software remotamente con python3
 
 ## ejecución
 
-```sh
-FLASK_APP=main.py flask run --host=0.0.0.0
+CMD:
+
+```batch
+set FLASK_APP=main.py
+set FLASK_DEBUG=1
+flask run --host=0.0.0.0
+```
+
+Powershell:
+
+```powershell
+$env:FLASK_APP = "main.py"
+$env:FLASK_DEBUG = "1"
+flask run --host=0.0.0.0
 ```
