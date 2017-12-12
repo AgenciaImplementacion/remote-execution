@@ -9,8 +9,7 @@ from flask import Flask, flash, redirect, render_template, \
     request, url_for, send_file, send_from_directory, request
 
 """
-Ingresa al navegador con:
-http://mi.ip:5000/reporte/pdf?url_imagen=http://ip_serv/imagen.png
+
 """
 
 app = Flask(__name__)
@@ -24,10 +23,17 @@ def index():
 
 
 def call_software():
-    # os.system("C:/Users/aimplementacion/remote-execution/scripts/test_Asistente-LADM_COL.bat")
+    import sys
+    is_windows = hasattr(sys, 'getwindowsversion')
+    if (is_windows):
+        ouput = subprocess.check_output(["scripts/test_Asistente-LADM_COL.bat"], stderr=subprocess.STDOUT)
+    else:
+        ouput = subprocess.check_output(["scripts/test_Asistente-LADM_COL.sh"], stderr=subprocess.STDOUT)
+
+    #os.system("C:/Users/aimplementacion/remote-execution/scripts/test_Asistente-LADM_COL.bat")
     # ouput = os.popen(
     #    "C:/Users/aimplementacion/remote-execution/scripts/test_Asistente-LADM_COL.bat").readlines()
-    ouput = subprocess.check_output(["scripts/test_Asistente-LADM_COL.sh"], stderr=subprocess.STDOUT)
+
     return ouput
 
 

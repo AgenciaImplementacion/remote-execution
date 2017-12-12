@@ -2,22 +2,22 @@
 
 Ejecutar software remotamente con python3
 
-## ejecución
+## inicio
 
-CMD:
+CMD y powershell:
 
 ```batch
-set FLASK_APP=main.py
-set FLASK_DEBUG=1
-flask run --host=0.0.0.0
+python main.py
 ```
 
-Powershell:
+## uso
 
-```powershell
-$env:FLASK_APP = "main.py"
-$env:FLASK_DEBUG = "1"
-flask run --host=0.0.0.0
+Ingresa al navegador con:
+http://mi.ip:5000/
+O en terminal:
+
+```bash
+curl -X POST -F 'username=admin' -F 'password=secret' http://localhost:5000/execute
 ```
 
 ## referencias
