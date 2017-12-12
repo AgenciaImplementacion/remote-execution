@@ -4,9 +4,12 @@
 import tempfile
 import os
 import subprocess
+import sys
 
 from flask import Flask, flash, redirect, render_template, \
     request, url_for, send_file, send_from_directory, request
+	
+from shutil import copyfile
 
 """
 
@@ -14,7 +17,7 @@ from flask import Flask, flash, redirect, render_template, \
 
 app = Flask(__name__)
 app.secret_key = 'some_secret'
-app.othervar = 'scripts'
+app.defaultpath = 'logs'
 
 
 @app.route('/')
@@ -23,7 +26,6 @@ def index():
 
 
 def call_software():
-	import sys
 	output = b"vacio"
 	#output = bytearray()
 	is_windows = hasattr(sys, 'getwindowsversion')
@@ -42,6 +44,10 @@ def call_software():
     #    "C:/Users/aimplementacion/remote-execution/scripts/test_Asistente-LADM_COL.bat").readlines()
 	return output
 
+def get_version():
+	p = subprocess.Popen(["git", "rev-parse", "HEAD"], cwd="C:\\Users\\aimplementacion\\Asistente-LADM_COL", stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+	p.wait()
+	return p.stdout.readline().decode("utf-8").replace('\n', '')
 
 @app.route('/execute', methods=['GET', 'POST'])
 def login():
@@ -54,6 +60,8 @@ def login():
             flash('You were successfully logged in')
             stdouttext = call_software()
             print("stdouttext", stdouttext)
+            print("gitv", get_version())
+            print("type", type(get_version()))
             handle, filepath = tempfile.mkstemp('.log', 'remote-execution-')
             #fd = os.open( "foo.txt", os.O_RDWR|os.O_CREAT )
             #fd = os.fdopen(handle)
@@ -64,6 +72,8 @@ def login():
             # f.write( "\n".join(stdouttext) )
             f.write(stdouttext.decode())
             f.close()
+            destino = app.defaultpath + os.sep + "log_" + get_version() + ".log"
+            copyfile(filepath, destino)
             #uploads = os.path.join(current_app.root_path, app.config['UPLOAD_FOLDER'])
             #return send_from_directory(directory=carpeta_archivo, filename=nombre_archivo)
             return send_file(filepath, as_attachment=True, attachment_filename="stdout.log")
