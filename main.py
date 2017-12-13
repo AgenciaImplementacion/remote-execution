@@ -11,6 +11,8 @@ from flask import Flask, flash, redirect, render_template, \
 
 from shutil import copyfile
 
+from time import gmtime, strftime
+
 """
 
 """
@@ -19,14 +21,13 @@ app = Flask(__name__)
 app.secret_key = 'some_secret'
 app.defaultpath = 'logs'
 
-
 @app.route('/')
 def index():
     return render_template('login.html')
 
-
 def call_software():
     output = b"vacio"
+    error = False
     # output = bytearray()
     script_path = ''
     is_windows = hasattr(sys, 'getwindowsversion')
@@ -41,11 +42,12 @@ def call_software():
         output = e.output
         print('Error')
         print(e.output)
+        error = True
 
     # os.system('C:/Users/aimplementacion/remote-execution/scripts/test_Asistente-LADM_COL.bat')
     # ouput = os.popen(
     #    'C:/Users/aimplementacion/remote-execution/scripts/test_Asistente-LADM_COL.bat').readlines()
-    return output
+    return [output, error]
 
 def get_version():
     repo_path = ''
@@ -59,6 +61,9 @@ def get_version():
     p.wait()
     return p.stdout.readline().decode('utf-8').replace('\n', '')
 
+def get_time():
+    return strftime("%Y-%m-%d_%H:%M:%S", gmtime())
+
 @app.route('/execute', methods=['GET', 'POST'])
 def login():
     error = None
@@ -68,10 +73,15 @@ def login():
             error = 'Invalid credentials'
         else:
             flash('You were successfully logged in')
-            stdouttext = call_software()
+
+            [stdouttext, error] = call_software()
             print('stdouttext', stdouttext)
-            print('gitv', get_version())
-            print('type', type(get_version()))
+            subindice = ""
+            if error:
+                subindice = "error"
+            else:
+                subindice = "success"
+
             handle, filepath = tempfile.mkstemp()
             # fd = os.open( 'foo.txt', os.O_RDWR|os.O_CREAT )
             # fd = os.fdopen(handle)
@@ -82,7 +92,8 @@ def login():
             # f.write( '\n'.join(stdouttext) )
             f.write(stdouttext.decode())
             f.close()
-            destino = app.defaultpath + os.sep + 'log_' + get_version() + '.log'
+
+            destino = app.defaultpath + os.sep + 'Asistente-LADM_COL__' + get_time() + '__' + get_version()  + '__' + subindice +'.log'
             copyfile(filepath, destino)
             # uploads = os.path.join(current_app.root_path, app.config['UPLOAD_FOLDER'])
             # return send_from_directory(directory=carpeta_archivo, filename=nombre_archivo)
