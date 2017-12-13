@@ -8,7 +8,7 @@ import sys
 
 from flask import Flask, flash, redirect, render_template, \
     request, url_for, send_file, send_from_directory, request
-	
+
 from shutil import copyfile
 
 """
@@ -26,28 +26,38 @@ def index():
 
 
 def call_software():
-	output = b"vacio"
-	#output = bytearray()
-	is_windows = hasattr(sys, 'getwindowsversion')
-	if (is_windows):
-		try:
-			output = subprocess.check_output(["scripts\\test_Asistente-LADM_COL.bat"], stderr=subprocess.STDOUT)
-		except subprocess.CalledProcessError as e:
-			output = e.output
-			print("Error")
-			print(e.output)	
-	else:
-		output = subprocess.check_output(["scripts/test_Asistente-LADM_COL.sh"], stderr=subprocess.STDOUT)
+    output = b"vacio"
+    # output = bytearray()
+    script_path = ''
+    is_windows = hasattr(sys, 'getwindowsversion')
+    if (is_windows):
+        script_path = 'scripts\\test_Asistente-LADM_COL.bat'
+    else:
+        script_path = 'scripts/test_Asistente-LADM_COL.sh'
 
-    #os.system("C:/Users/aimplementacion/remote-execution/scripts/test_Asistente-LADM_COL.bat")
+    try:
+        output = subprocess.check_output([script_path], stderr=subprocess.STDOUT)
+    except subprocess.CalledProcessError as e:
+        output = e.output
+        print('Error')
+        print(e.output)
+
+    # os.system('C:/Users/aimplementacion/remote-execution/scripts/test_Asistente-LADM_COL.bat')
     # ouput = os.popen(
-    #    "C:/Users/aimplementacion/remote-execution/scripts/test_Asistente-LADM_COL.bat").readlines()
-	return output
+    #    'C:/Users/aimplementacion/remote-execution/scripts/test_Asistente-LADM_COL.bat').readlines()
+    return output
 
 def get_version():
-	p = subprocess.Popen(["git", "rev-parse", "HEAD"], cwd="C:\\Users\\aimplementacion\\Asistente-LADM_COL", stdout=subprocess.PIPE, stderr=subprocess.PIPE)
-	p.wait()
-	return p.stdout.readline().decode("utf-8").replace('\n', '')
+    repo_path = ''
+    is_windows = hasattr(sys, 'getwindowsversion')
+    if (is_windows):
+        repo_path = 'C:\\Users\\aimplementacion\\Asistente-LADM_COL'
+    else:
+        repo_path = '/home/jorge/workspace/Asistente-LADM_COL'
+
+    p = subprocess.Popen(['git', 'rev-parse', 'HEAD'], cwd=repo_path, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
+    p.wait()
+    return p.stdout.readline().decode('utf-8').replace('\n', '')
 
 @app.route('/execute', methods=['GET', 'POST'])
 def login():
@@ -59,29 +69,29 @@ def login():
         else:
             flash('You were successfully logged in')
             stdouttext = call_software()
-            print("stdouttext", stdouttext)
-            print("gitv", get_version())
-            print("type", type(get_version()))
+            print('stdouttext', stdouttext)
+            print('gitv', get_version())
+            print('type', type(get_version()))
             handle, filepath = tempfile.mkstemp()
-            #fd = os.open( "foo.txt", os.O_RDWR|os.O_CREAT )
-            #fd = os.fdopen(handle)
-            #nombre_archivo = filepath[filepath.rfind(os.sep) + 1:]
-            #carpeta_archivo = filepath[0:filepath.rfind(os.sep) + 1]
-            #print(nombre_archivo, carpeta_archivo)
-            f = os.fdopen( handle, "w" )
-            # f.write( "\n".join(stdouttext) )
+            # fd = os.open( 'foo.txt', os.O_RDWR|os.O_CREAT )
+            # fd = os.fdopen(handle)
+            # nombre_archivo = filepath[filepath.rfind(os.sep) + 1:]
+            # carpeta_archivo = filepath[0:filepath.rfind(os.sep) + 1]
+            # print(nombre_archivo, carpeta_archivo)
+            f = os.fdopen( handle, 'w' )
+            # f.write( '\n'.join(stdouttext) )
             f.write(stdouttext.decode())
             f.close()
-            destino = app.defaultpath + os.sep + "log_" + get_version() + ".log"
+            destino = app.defaultpath + os.sep + 'log_' + get_version() + '.log'
             copyfile(filepath, destino)
-            #uploads = os.path.join(current_app.root_path, app.config['UPLOAD_FOLDER'])
-            #return send_from_directory(directory=carpeta_archivo, filename=nombre_archivo)
-            return send_file(filepath, as_attachment=True, attachment_filename="stdout.log")
+            # uploads = os.path.join(current_app.root_path, app.config['UPLOAD_FOLDER'])
+            # return send_from_directory(directory=carpeta_archivo, filename=nombre_archivo)
+            return send_file(filepath, as_attachment=True, attachment_filename='stdout.log')
             # return 'Se ejecutó exitosamente :D'
             # return redirect(url_for('index'))
     return render_template('login.html', error=error)
 
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     # para produccion reemplazar por la IP correspondiente
-    app.run(host="0.0.0.0", port=5000)
+    app.run(host='0.0.0.0', port=5000)
