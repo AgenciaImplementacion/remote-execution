@@ -62,7 +62,7 @@ def get_version():
     return p.stdout.readline().decode('utf-8').replace('\n', '')
 
 def get_time():
-    return strftime("%Y-%m-%d_%H:%M:%S", gmtime())
+    return strftime("%Y-%m-%d_%H-%M-%S", gmtime())
 
 @app.route('/execute', methods=['GET', 'POST'])
 def login():
