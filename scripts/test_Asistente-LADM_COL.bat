@@ -1,7 +1,7 @@
 :: Es un script en batch
 ECHO OFF
 ECHO Configurando entorno
-rem https://qgis.org/downloads/
+rem https://qgis.org/downloads/weekly/QGIS-OSGeo4W-2.99.0-51-Setup-x86_64.exe
 rem C:\Users\aimplementacion\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup
 rem https://answers.microsoft.com/es-es/windows/forum/windows_10-other_settings-winpc/windows-10-programar-una-tarea-cómo-programar/dd0be19b-0365-4407-90f2-426c014d4da1
 @echo off
@@ -20,7 +20,7 @@ set QT_PLUGIN_PATH=%OSGEO4W_ROOT%\apps\qgis-dev\qtplugins;%OSGEO4W_ROOT%\apps\qt
 set PYTHONPATH=%OSGEO4W_ROOT%\apps\qgis-dev\python;C:\Users\aimplementacion\AppData\Local\Programs\Python\Python36\Lib\site-packages;%PYTHONPATH%
 
 ECHO Se inician pruebas
-REM xvfb-run xbnose2-3 
+REM xvfb-run xbnose2-3
 cd C:\Users\aimplementacion\Asistente-LADM_COL
 git pull origin master
 rem "%PYTHONHOME%\python" main.py
