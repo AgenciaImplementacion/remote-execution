@@ -88,9 +88,10 @@ def login():
             # nombre_archivo = filepath[filepath.rfind(os.sep) + 1:]
             # carpeta_archivo = filepath[0:filepath.rfind(os.sep) + 1]
             # print(nombre_archivo, carpeta_archivo)
-            f = os.fdopen( handle, 'w' )
+            f = os.fdopen( handle, 'wb' )
             # f.write( '\n'.join(stdouttext) )
-            f.write(stdouttext.decode())
+            # f.write(stdouttext.decode())
+            f.write(stdouttext)
             f.close()
 
             destino = app.defaultpath + os.sep + 'Asistente-LADM_COL__' + get_time() + '__' + get_version()  + '__' + subindice +'.log'
