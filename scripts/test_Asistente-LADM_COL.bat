@@ -1,11 +1,12 @@
 :: Es un script en batch
 ECHO OFF
 ECHO Configurando entorno
-rem https://qgis.org/downloads/weekly/QGIS-OSGeo4W-2.99.0-51-Setup-x86_64.exe
+rem https://qgis.org/downloads/weekly/QGIS-OSGeo4W-2.99.0-51-Setup-x86_64.exe # old
+rem https://qgis.org/downloads/QGIS-OSGeo4W-3.0.0-3-Setup-x86_64.exe # new
 rem C:\Users\aimplementacion\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup
 rem https://answers.microsoft.com/es-es/windows/forum/windows_10-other_settings-winpc/windows-10-programar-una-tarea-cómo-programar/dd0be19b-0365-4407-90f2-426c014d4da1
 @echo off
-cd C:\Program Files\QGIS 2.99\bin
+cd C:\Program Files\QGIS 3.0\bin
 call o4w_env.bat
 call qt5_env.bat
 call py3_env.bat
