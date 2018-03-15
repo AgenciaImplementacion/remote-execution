@@ -25,4 +25,7 @@ REM xvfb-run xbnose2-3
 cd C:\Users\aimplementacion\Asistente-LADM_COL
 git pull origin master
 rem "%PYTHONHOME%\python" main.py
+cd asistente_ladm_col
+make
+cd ..
 nose2
