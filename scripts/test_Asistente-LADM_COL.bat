@@ -25,7 +25,12 @@ REM xvfb-run xbnose2-3
 cd C:\Users\aimplementacion\Asistente-LADM_COL
 git pull origin master
 rem "%PYTHONHOME%\python" main.py
-cd asistente_ladm_col
-make
-cd ..
+ECHO Se compilan recursos
+cd C:\Users\aimplementacion\Asistente-LADM_COL\asistente_ladm_col
+ECHO Inicia pyrcc5
+REM pyrcc5 -version
+REM pyrcc5 -o resources_rc.py resources.qrc
+python -m PyQt5.pyrcc_main -o resources_rc.py resources.qrc
+cd C:\Users\aimplementacion\Asistente-LADM_COL
+ECHO Se inician pruebas NOSE2
 nose2
