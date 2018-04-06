@@ -18,7 +18,7 @@ rem Set VSI cache to be used as buffer, see #6448
 set VSI_CACHE=TRUE
 set VSI_CACHE_SIZE=1000000
 set QT_PLUGIN_PATH=%OSGEO4W_ROOT%\apps\qgis\qtplugins;%OSGEO4W_ROOT%\apps\qt5\plugins
-set PYTHONPATH=%OSGEO4W_ROOT%\apps\qgis\python;C:\Users\aimplementacion\AppData\Local\Programs\Python\Python36\Lib\site-packages;%PYTHONPATH%
+set PYTHONPATH=%OSGEO4W_ROOT%\apps\qgis\python;C:\Program Files\QGIS 3.0\apps\qgis\python\plugins;C:\Users\aimplementacion\AppData\Roaming\QGIS\QGIS3\profiles\default\python\plugins;C:\Users\aimplementacion\AppData\Local\Programs\Python\Python36\Lib\site-packages;%PYTHONPATH%
 
 ECHO Se inician pruebas
 REM xvfb-run xbnose2-3
