@@ -23,6 +23,8 @@ set PYTHONPATH=%OSGEO4W_ROOT%\apps\qgis\python;C:\Program Files\QGIS 3.0\apps\qg
 ECHO Se inician pruebas
 REM xvfb-run xbnose2-3
 cd C:\Users\aimplementacion\Asistente-LADM_COL
+git fetch --all
+git reset --hard origin/master
 git pull origin master
 rem "%PYTHONHOME%\python" main.py
 ECHO Se compilan recursos
