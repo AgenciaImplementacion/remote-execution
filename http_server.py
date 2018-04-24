@@ -110,9 +110,9 @@ def get_text_image_state():
 def new_do_GET(self):
     """Serve a GET request only for STATUS."""
     if self.path == '/status.svg':
-        import datetime
-        import hashlib
         print('Returning ', self.path)
+        import datetime
+        import base64
         #r = []
         #r.append('<html></html>')
         #body = '\n'.join(r).encode('UTF-8', 'replace')
@@ -126,9 +126,8 @@ def new_do_GET(self):
         expires = datetime.datetime.utcnow() + datetime.timedelta(minutes=2)
         expires = expires.strftime('%a, %d %b %Y %H:%M:%S GTM')
         self.send_header("Expires", expires)
-        checksum = hashlib.md5()
-        checksum.update(body)
-        self.send_header("Etag", '"{sum}"'.format(sum=checksum.hexdigest()))
+        encoded = base64.b64encode(expires.encode())
+        self.send_header("Etag", '"{hash}"'.format(hash=str(encoded.decode())))
         self.send_header("Content-Length", str(len(body)))
         self.end_headers()
         try:
