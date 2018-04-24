@@ -110,6 +110,7 @@ def get_text_image_state():
 def new_do_GET(self):
     """Serve a GET request only for STATUS."""
     if self.path == '/status.svg':
+        import datetime
         print('Returning ', self.path)
         #r = []
         #r.append('<html></html>')
@@ -121,6 +122,9 @@ def new_do_GET(self):
         self.send_response(HTTPStatus.OK)
         self.send_header("Content-type", "image/svg+xml; charset=UTF-8")
         self.send_header("Cache-control", "no-cache")
+        expires = datetime.datetime.utcnow() + datetime.timedelta(minutes=2)
+        expires = expires.strftime('%a, %d %b %Y %H:%M:%S GTM')
+        self.send_header("Expires", expires)
         self.send_header("Content-Length", str(len(body)))
         self.end_headers()
         try:
