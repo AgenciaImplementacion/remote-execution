@@ -111,6 +111,7 @@ def new_do_GET(self):
     """Serve a GET request only for STATUS."""
     if self.path == '/status.svg':
         import datetime
+        import hashlib
         print('Returning ', self.path)
         #r = []
         #r.append('<html></html>')
@@ -121,10 +122,13 @@ def new_do_GET(self):
         f.seek(0)
         self.send_response(HTTPStatus.OK)
         self.send_header("Content-type", "image/svg+xml; charset=UTF-8")
-        self.send_header("Cache-control", "no-cache")
+        self.send_header("Cache-control", "no-cache, private")
         expires = datetime.datetime.utcnow() + datetime.timedelta(minutes=2)
         expires = expires.strftime('%a, %d %b %Y %H:%M:%S GTM')
         self.send_header("Expires", expires)
+        checksum = hashlib.md5()
+        checksum.update(body)
+        self.send_header("Etag", '"{sum}"'.format(sum=checksum.hexdigest()))
         self.send_header("Content-Length", str(len(body)))
         self.end_headers()
         try:
