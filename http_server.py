@@ -84,7 +84,59 @@ def new_list_directory(self, path):
     self.end_headers()
     return f
 
+def get_state():
+    files = [f for f in os.listdir('.') if os.path.isfile(f) and f.endswith('.log')]
+    #print('files', files)
+    #print('file[-5:-1]', [file[-4:] for file in files])
+    if len(files) == 0:
+        return 'unknown.svg'
+    files = sorted(files)
+    last_file = files[-1]
+    print('Last log file: ' + last_file)
+    if last_file.endswith('__error.log'):
+        return 'failing.svg'
+    elif last_file.endswith('__success.log'):
+        return 'passing.svg'
+    else:
+        return 'unknown.svg'
+    
+def get_text_image_state():
+    file = open(os.path.abspath(os.path.join('../templates', get_state())), 'r')
+    body = file.read().encode('UTF-8', 'replace')
+    file.close()
+    return body
+    
+# https://github.com/python/cpython/blob/3.6/Lib/http/server.py#L634
+def new_do_GET(self):
+    """Serve a GET request only for STATUS."""
+    if self.path == '/status.svg':
+        print('Returning ', self.path)
+        #r = []
+        #r.append('<html></html>')
+        #body = '\n'.join(r).encode('UTF-8', 'replace')
+        body = get_text_image_state()
+        f = io.BytesIO()
+        f.write(body)
+        f.seek(0)
+        self.send_response(HTTPStatus.OK)
+        self.send_header("Content-type", "image/svg+xml; charset=UTF-8")
+        self.send_header("Content-Length", str(len(body)))
+        self.end_headers()
+        try:
+            self.copyfile(f, self.wfile)
+        finally:
+            f.close()
+        return
+    """Default!!!"""
+    """Serve a GET request."""
+    f = self.send_head()
+    if f:
+        try:
+            self.copyfile(f, self.wfile)
+        finally:
+            f.close()
 
+Handler.do_GET = new_do_GET			
 Handler.list_directory = new_list_directory
 
 with socketserver.TCPServer(("", PORT), Handler) as httpd:
