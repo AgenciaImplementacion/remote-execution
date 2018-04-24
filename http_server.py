@@ -120,6 +120,7 @@ def new_do_GET(self):
         f.seek(0)
         self.send_response(HTTPStatus.OK)
         self.send_header("Content-type", "image/svg+xml; charset=UTF-8")
+        self.send_header("Cache-control", "no-cache")
         self.send_header("Content-Length", str(len(body)))
         self.end_headers()
         try:
