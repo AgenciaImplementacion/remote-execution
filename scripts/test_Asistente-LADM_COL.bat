@@ -1,5 +1,6 @@
 :: Es un script en batch
 ECHO OFF
+set initialpath=%cd%
 
 ECHO Actualizando repositorio
 cd C:\Users\aimplementacion\Asistente-LADM_COL
@@ -8,6 +9,7 @@ git reset --hard origin/master
 git pull origin master
 
 ECHO Se actualiza projectgenerator antes de configurar python qgis
+cd %initialpath%
 python update_project_generator.py C:\Users\aimplementacion\AppData\Roaming\QGIS\QGIS3\profiles\default\python\plugins\projectgenerator C:\Users\aimplementacion\Asistente-LADM_COL\asistente_ladm_col
 
 ECHO Configurando entorno de python qgis
