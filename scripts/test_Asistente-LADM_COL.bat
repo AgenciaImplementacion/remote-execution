@@ -21,6 +21,7 @@ set PYTHONPATH=%OSGEO4W_ROOT%\apps\qgis-dev\python;C:\Users\aimplementacion\AppD
 
 ECHO Se inician pruebas
 REM xvfb-run xbnose2-3
+python update_project_generator.py C:\Users\aimplementacion\AppData\Roaming\QGIS\QGIS3\profiles\default\python\plugins\projectgenerator C:\Users\aimplementacion\Asistente-LADM_COL\asistente_ladm_col
 cd C:\Users\aimplementacion\Asistente-LADM_COL
 git pull origin master
 rem "%PYTHONHOME%\python" main.py

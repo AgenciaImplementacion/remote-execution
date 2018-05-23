@@ -50,3 +50,4 @@ else:
         shutil.rmtree(projectgenerator_path)
         shutil.move(tmpDir + '/projectgenerator', projectgenerator_path)
         shutil.rmtree(tmpDir)
+    print('La versión de projectgenerator fue actualizada correctamente.')
