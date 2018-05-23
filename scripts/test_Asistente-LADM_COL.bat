@@ -1,6 +1,8 @@
 :: Es un script en batch
 ECHO OFF
+pushd %~dp0
 set initialpath=%cd%
+popd
 
 ECHO Actualizando repositorio
 cd C:\Users\aimplementacion\Asistente-LADM_COL
