@@ -1,6 +1,16 @@
 :: Es un script en batch
 ECHO OFF
-ECHO Configurando entorno
+
+ECHO Actualizando repositorio
+cd C:\Users\aimplementacion\Asistente-LADM_COL
+git fetch --all
+git reset --hard origin/master
+git pull origin master
+
+ECHO Se actualiza projectgenerator antes de configurar python qgis
+python update_project_generator.py C:\Users\aimplementacion\AppData\Roaming\QGIS\QGIS3\profiles\default\python\plugins\projectgenerator C:\Users\aimplementacion\Asistente-LADM_COL\asistente_ladm_col
+
+ECHO Configurando entorno de python qgis
 rem https://qgis.org/downloads/weekly/QGIS-OSGeo4W-2.99.0-51-Setup-x86_64.exe # old
 rem https://qgis.org/downloads/QGIS-OSGeo4W-3.0.0-3-Setup-x86_64.exe # new
 rem C:\Users\aimplementacion\AppData\Roaming\Microsoft\Windows\Start Menu\Programs\Startup
@@ -20,13 +30,10 @@ set VSI_CACHE_SIZE=1000000
 set QT_PLUGIN_PATH=%OSGEO4W_ROOT%\apps\qgis\qtplugins;%OSGEO4W_ROOT%\apps\qt5\plugins
 set PYTHONPATH=%OSGEO4W_ROOT%\apps\qgis\python;C:\Program Files\QGIS 3.0\apps\qgis\python\plugins;C:\Users\aimplementacion\AppData\Roaming\QGIS\QGIS3\profiles\default\python\plugins;C:\Users\aimplementacion\AppData\Local\Programs\Python\Python36\Lib\site-packages;%PYTHONPATH%
 
-ECHO Se inician pruebas
+ECHO Se termina configuracion de ambiente de pruebas
 REM xvfb-run xbnose2-3
-python update_project_generator.py C:\Users\aimplementacion\AppData\Roaming\QGIS\QGIS3\profiles\default\python\plugins\projectgenerator C:\Users\aimplementacion\Asistente-LADM_COL\asistente_ladm_col
+
 cd C:\Users\aimplementacion\Asistente-LADM_COL
-git fetch --all
-git reset --hard origin/master
-git pull origin master
 rem "%PYTHONHOME%\python" main.py
 ECHO Se compilan recursos
 cd C:\Users\aimplementacion\Asistente-LADM_COL\asistente_ladm_col

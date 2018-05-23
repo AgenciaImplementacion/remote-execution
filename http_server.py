@@ -109,7 +109,7 @@ def get_text_image_state():
 # https://github.com/python/cpython/blob/3.6/Lib/http/server.py#L634
 def new_do_GET(self):
     """Serve a GET request only for STATUS."""
-    if self.path == '/status.svg':
+    if self.path == '/status.svg?branch=master':
         print('Returning ', self.path)
         import datetime
         import base64
